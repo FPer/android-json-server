@@ -12,16 +12,22 @@ class MainActivity : AppCompatActivity() {
         Handler().postDelayed({ startActivity(intent) }, 200)
     }
 
+    private var ignoreflag = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         nextBtn.setOnClickListener {
+            if(ignoreflag) return@setOnClickListener
+            Thread(){
+                kotlin.run { Thread.sleep(200) ; ignoreflag = false }
+            }.start()
+            ignoreflag = true
             goToNextActivity()
         }
 
         loadBtn.setOnClickListener {
-            Thread.sleep(10000)
+            Thread.sleep(3000)
             textView.text = "ロードしたつもり"
         }
 
