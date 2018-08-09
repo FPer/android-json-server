@@ -4,7 +4,10 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import com.jakewharton.rxbinding2.view.RxView
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
     private fun goToNextActivity(){
@@ -16,9 +19,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        nextBtn.setOnClickListener {
-            goToNextActivity()
-        }
+        RxView
+                .clicks(nextBtn)
+                .throttleFirst(300, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { goToNextActivity() }
 
         loadBtn.setOnClickListener {
             Thread.sleep(10000)
