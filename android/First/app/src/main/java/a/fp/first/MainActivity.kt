@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
     private fun goToNextActivity(){
@@ -19,9 +20,7 @@ class MainActivity : AppCompatActivity() {
 
         nextBtn.setOnClickListener {
             if(ignoreflag) return@setOnClickListener
-            Thread(){
-                kotlin.run { Thread.sleep(200) ; ignoreflag = false }
-            }.start()
+            thread { Thread.sleep(200) ; ignoreflag = false }
             ignoreflag = true
             goToNextActivity()
         }
